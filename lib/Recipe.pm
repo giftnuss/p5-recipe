@@ -1,14 +1,26 @@
   package Recipe
-; use Sub::Uplevel # for my basis
-; use strict; use warnings; use utf8
+# **************
+; our $VERSION='0.01'
+# *******************
+; use strict; use utf8
 
-; use Recipe::Factory
+; use Recipe::Factory ()
+; use Package::Subroutine ('pkgname')
 
 ; our ($AUTOLOAD)
 
+; sub factory { 'Recipe::Factory' }
+
 ; sub AUTOLOAD
-    { $AUTOLOAD =~ s/^.*:://
-    ; my $recipe=Recipe::Factory->new($AUTOLOAD => @_)
+    { my ($self,@args)=@_
+    ; $AUTOLOAD =~ s/^.*:://
+    ; my $recipe=$self->factory->new($AUTOLOAD => @_)
+    }
+    
+; sub import
+    { my $self=shift()
+    ; if ( @_ )
+        { $self->factory->import(@_) }
     }
 
 ; 1
@@ -21,8 +33,17 @@ Recipe - create, write and cook it
 
 =head1 SYNOPSIS
 
-- :)
+Writing a recipe:
 
+    package Recipe::Std::NDoc 
+  ; use base 'Recipe::Object'
+
+  ; ndoc Recipe basic
+      => summary        
+      => param          
+      => returns           
+      =>;
+      
 =head1 DESCRIPTION
 
 =head2 Reserved Keys

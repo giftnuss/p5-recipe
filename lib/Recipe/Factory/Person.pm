@@ -1,3 +1,5 @@
+
+; BEGIN { die 'NUR ZUR DOKUMENTATION',caller }
   package Recipe::Factory::Person
 ; use strict; use warnings; use utf8
 

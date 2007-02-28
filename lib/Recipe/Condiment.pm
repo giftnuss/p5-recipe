@@ -1,13 +1,15 @@
   package Recipe::Condiment
-; use strict; use warnings; use utf8; use from
-
-; our $VERSION=0.001
+# *************************
+; our $VERSION='0.001'
 ; our $AUTOLOAD
+# ********************
+; use strict; use warnings; use utf8
 
 ########################
 # External Modules
 ########################
 ; use Error
+; use Package::Subroutine
 ; use Recipe::Condiment::Type
 
 ########################
@@ -38,7 +40,7 @@
 ; our $DEFAULT_FOR_VAR='required'
 
 ; sub import
-    { export from _ => qw/required optional var/ }
+    { export Package::Subroutine _ => qw/required optional var/ }
 
 ########################
 # Constructor
@@ -89,8 +91,8 @@
    ; $self->_name()
    }
 
- ; sub required { warn "C:",wantarray,"\n";_set_required(1,@_) }
- ; sub optional { warn "C:",wantarray,"\n"; _set_required(0,@_) }
+ ; sub required { _set_required(1,@_) }
+ ; sub optional { _set_required(0,@_) }
 }
 
 ; sub DESTROY {}

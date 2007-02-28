@@ -1,21 +1,35 @@
   package Recipe::Factory
-; use strict
-
+# ***********************
+; our $VERSION='0.01'
+# *******************
+; use strict; use utf8
 ; use base 'Class::Factory'
 
-; our (@TYPES)
-; sub addtype # called in the BEGIN initilization
+; use Recipe::Factory::Object
+; use Package::Subroutine('pkgname')
 
-; BEGIN 
-    { sub rf () { 'Recipe::Factory::' }
-    ; sub addtype { push our @TYPES , @_ }
-    ; addtype
-        #[ application   => rf.'Application'    , "Universal application type" ],
-        [ person        => rf.'Person',          "Society member" ]
+; sub import
+    { my ($pkg,@types)=@_
+    ; foreach (@types)
+        { my ($class,$factory)=$pkg->create_factory_class($_)
+        # Class::Factory - ich verstehe wirklich nicht wieso
+        # alles wunderbar funktioniert.
+        ; Recipe::Factory->register_factory_type( lc($class),$factory )
+        }
     }
 
-; INIT
-    { Recipe::Factory->register_factory_type( @{$_}[0,1] ) for @TYPES 
+; sub create_factory_class
+    { my ($pkg,$fqcn)=@_
+    ; my @pkg=split /::|'/, $fqcn # '
+    ; my $class   = $pkg[-1]
+    ; my $factory = "Recipe::Factory::Object::${class}"
+    ; my $file    = __FILE__
+    
+    ; eval  "  package $factory; our \@ISA=('Recipe::Factory::Object')"
+           ."; sub classloader { require $fqcn }"
+           ."; sub realclass   { '$fqcn' }"
+    ; $INC{pkgname($factory)}=$file
+    ; ($class,$factory)
     }
 
 ; sub new 
@@ -38,3 +52,4 @@
 ; 1
 
 __END__
+

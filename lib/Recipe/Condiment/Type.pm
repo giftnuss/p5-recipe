@@ -1,23 +1,25 @@
   package Recipe::Condiment::Type
+# *******************************
+; our $VERSION='0.01'
+# *******************
 ; use strict; use warnings; use utf8
-
 ; use Class::Struct
 
-; sub valid { shift()->{'valid'}->(@_) }
+; sub valid { shift()->{'_valid'}->(@_) }
 
 ; struct   
-   ( name   => '$'
-   , valid  => '$'
-   , base   => '$'
+   ( _name   => '$'
+   , _valid  => '$'
+   , _base   => '$'
    )
 
 #######################################################################
-; sub type ($&)
+; sub type ($&@)
     { my ($name,$valid,$base)=@_
     ; __PACKAGE__->new
-        ( name  => $name
-        , valid => $valid
-        , base  => $base || 'SCALAR'
+        ( _name  => $name
+        , _valid => $valid
+        , _base  => $base || 'SCALAR'
         )
     }
 

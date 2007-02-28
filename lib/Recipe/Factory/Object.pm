@@ -1,11 +1,11 @@
   package Recipe::Factory::Object
-; use strict; use warnings; use utf8
-
-; our $VERSION=0.001
+# *******************************
+; our $VERSION='0.001'
+# ********************
+; use strict; use utf8
     
 ; sub init
     { my $factory_class=shift()
-    ; $factory_class->classloader
     ; $factory_class->realclass->init(@_)
     }
 

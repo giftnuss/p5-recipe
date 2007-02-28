@@ -1,4 +1,7 @@
   package Recipe::Object
+# **********************
+; our $VERSION='0.001'
+# ********************
 ; use strict; use warnings; use utf8
 
 ; use Carp
@@ -6,7 +9,8 @@
 ; use Sub::Install 'install_sub'
 
 ; use Data::Dumper
-; sub debug { print STDERR @_ }
+; sub debug { print STDERR @_ 
+            }
 
 #######################################################################
 # We can not use memoized Params from Params::Smart, so we
@@ -21,7 +25,7 @@
 
 # create somthing in the derived class
 ; sub init
-    { print "Init: ".Dumper([@_])
+    { #print "Init: ".Dumper([@_])
     ; my $class  =shift() ### the class which handles creation: $class 
     ; my $factory=shift() ### factory providing the class: $factory
     ; my $type   =shift() ### user chosen type: $type
@@ -43,11 +47,14 @@
 
     ; my $subpkg = "${class}::${type}"
     ; my $self={name => 'self',position => 0, required => 1}
-    ; my @template=($self,@params)    
+    ; my @template=($self,map { ref $params[$_] 
+                           ? $params[$_] 
+                           : { name => $params[$_], position => $_+1 }
+                           } 0..$#params )    
     ; my $sub = sub
         { return bless([@_,@params],$subpkg) if @_==1
         ; my %args = Params($subpkg,@template)->args(@_)
-        ; print Dumper(\%args)
+#        ; print Dumper(\%args)
         ; $args{self}
         }
     ; debug "Install $method in class $class with signatur:",Dumper('self',@params)
