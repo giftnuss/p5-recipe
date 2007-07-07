@@ -19,7 +19,3 @@
 
 __END__
 
-# Das kann nicht direkt in der Factory::Person stehen
-# weil das verwendete eval zum Laden nicht sehr Carpfreundlich ist.
-# Man bekommt nicht Fehler in Zeile sowieso, sondern in eval line 5
-# irgendwas.
